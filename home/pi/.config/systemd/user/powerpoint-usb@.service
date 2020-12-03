@@ -1,0 +1,6 @@
+[Unit]
+Description="Launch Powerpoint on USB plug"
+
+[Service]
+ExecStart=%h/.local/bin/powerpoint-usb.sh %i Management_visuel_methode.pps
+
