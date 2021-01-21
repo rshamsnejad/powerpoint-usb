@@ -6,9 +6,13 @@ mount_disk()
 {
 	DEV="$1"
 
-	udisksctl mount -o ro -b "$DEV" >/dev/null
-	
 	MOUNT_PATH=$(udisksctl info -b "$DEV" | grep MountPoints | tr -d ' ' | cut -d ':' -f 2)
+
+	if [ -z $MOUNT_PATH ] ; then
+		udisksctl mount -o ro -b "$DEV" >/dev/null
+		
+		MOUNT_PATH=$(udisksctl info -b "$DEV" | grep MountPoints | tr -d ' ' | cut -d ':' -f 2)
+	fi
 
 	if [ -z $MOUNT_PATH ] ; then
 		echo >2 "Unable to mount $DEV"
@@ -17,6 +21,7 @@ mount_disk()
 		echo >2 "Unable to read $MOUNT_PATH."
 		exit 1
 	fi
+	
 
 	echo "$MOUNT_PATH"
 }
